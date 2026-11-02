@@ -987,6 +987,151 @@ html[data-theme="light"] .camcard input,html[data-theme="light"] .camcard select
 
 
 .backup-nudge{display:flex;align-items:center;gap:10px;padding:10px 14px;margin-bottom:18px;border:1px solid var(--hairline);background:var(--sc-low);border-radius:12px;font-size:11px;line-height:1.45}.backup-nudge>span{flex:1;color:var(--muted)}.backup-nudge b{font-size:12px;color:var(--on-surface)}.backup-nudge .btn{padding:0 10px;font-size:11px}
+
+/* ============================================================
+   FINISH LAYER (Adam, 2026-11-02: "more aesthetic, more cutting
+   edge"). Surfaces only: light behind the page, lit card edges,
+   a glass header and a floating tab dock, lit buttons, a glow on
+   the numbers that matter, and cards that rise in on each screen.
+   No layout, copy or behavior changes. Delete this block to go
+   back to the 2026-10-31 look exactly.
+   ============================================================ */
+:root{
+  --pv-glow:color-mix(in srgb,var(--accent) 34%,transparent);
+  --pv-edge:linear-gradient(160deg,rgba(255,255,255,.17),rgba(255,255,255,.05) 34%,rgba(255,255,255,.02) 64%,
+    color-mix(in srgb,var(--accent) 20%,transparent));
+  --pv-card:linear-gradient(180deg,rgba(28,41,60,.82),rgba(16,25,39,.80));
+  --pv-inset:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.012));
+  --pv-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 22px 44px -22px rgba(0,0,0,.65),0 2px 6px rgba(0,0,0,.16);
+  --pv-glass:rgba(10,16,27,.72);
+  --pv-head:linear-gradient(180deg,#ffffff 20%,#b4c2d6);
+}
+html[data-theme="light"]{
+  --pv-glow:color-mix(in srgb,var(--accent) 26%,transparent);
+  --pv-edge:linear-gradient(160deg,rgba(17,26,39,.13),rgba(17,26,39,.06) 40%,rgba(17,26,39,.05) 70%,
+    color-mix(in srgb,var(--accent) 22%,transparent));
+  --pv-card:linear-gradient(180deg,rgba(255,255,255,.94),rgba(255,255,255,.86));
+  --pv-inset:linear-gradient(180deg,#f8fafc,#f2f5f9);
+  --pv-shadow:inset 0 1px 0 #ffffff,0 18px 40px -22px rgba(17,26,39,.22),0 1px 3px rgba(17,26,39,.06);
+  --pv-glass:rgba(244,247,251,.74);
+  --pv-head:linear-gradient(180deg,#0b1320 30%,#3b4b62);
+}
+
+/* light behind the page: three slow color fields and a fine grain */
+body::before{content:"";position:fixed;inset:-25vmax;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(38vmax 30vmax at 18% 14%,color-mix(in srgb,var(--accent) 13%,transparent),transparent 62%),
+    radial-gradient(42vmax 34vmax at 86% 22%,rgba(76,110,255,.15),transparent 62%),
+    radial-gradient(48vmax 38vmax at 50% 96%,rgba(0,214,255,.08),transparent 62%);
+  animation:pvDrift 30s ease-in-out infinite alternate}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+html[data-theme="light"] body::before{opacity:.75}
+html[data-theme="light"] body::after{opacity:.035}
+@keyframes pvDrift{to{transform:translate3d(3vmax,-2vmax,0) rotate(5deg) scale(1.06)}}
+
+/* glass header, full width */
+header.top,html[data-theme="light"] header.top{background:var(--pv-glass);backdrop-filter:blur(20px) saturate(160%);
+  -webkit-backdrop-filter:blur(20px) saturate(160%);box-shadow:0 0 0 100vmax var(--pv-glass);clip-path:inset(0 -100vmax)}
+.brandmark{box-shadow:0 0 0 1px rgba(255,255,255,.12) inset,0 6px 22px -4px var(--pv-glow)}
+.themebtn,.who{background:rgba(255,255,255,.04);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+html[data-theme="light"] .themebtn,html[data-theme="light"] .who{background:rgba(255,255,255,.7)}
+
+/* cards: lit top edge, deep soft shadow */
+.card:not(.camcard):not(.plan-wall),.plan-card,.week-block,.testcard,.exercise-card,.proto,.tier,.calendar-grid,
+html[data-theme="light"] .card:not(.camcard):not(.plan-wall){
+  background:var(--pv-card) padding-box,var(--pv-edge) border-box;border:1px solid transparent;box-shadow:var(--pv-shadow)}
+.card{border-radius:20px}
+.card.focus:not(.camcard),html[data-theme="light"] .card.focus:not(.camcard){
+  background:linear-gradient(150deg,color-mix(in srgb,var(--accent) 7%,rgba(30,45,66,.92)),rgba(15,24,38,.9)) padding-box,
+    linear-gradient(140deg,color-mix(in srgb,var(--accent) 75%,transparent),rgba(255,255,255,.07) 32%,rgba(255,255,255,.03) 68%,
+    color-mix(in srgb,var(--accent) 30%,transparent)) border-box;
+  box-shadow:var(--pv-shadow),0 0 48px -16px var(--pv-glow)}
+html[data-theme="light"] .card.focus:not(.camcard){
+  background:linear-gradient(150deg,color-mix(in srgb,var(--accent) 7%,#ffffff),#ffffff) padding-box,
+    linear-gradient(140deg,color-mix(in srgb,var(--accent) 70%,transparent),rgba(17,26,39,.07) 32%,rgba(17,26,39,.05) 68%,
+    color-mix(in srgb,var(--accent) 28%,transparent)) border-box}
+html[data-theme="light"] .card.cat{border-top:3px solid var(--cat)}
+.card-h .eyebrow,.card .eyebrow{letter-spacing:.12em}
+
+/* inner surfaces */
+.tile,.pair .p,.st2 .s,.hero-status .s{background:var(--pv-inset),rgba(7,12,21,.42);border:1px solid var(--hairline-soft);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+html[data-theme="light"] .tile:not(.cat),html[data-theme="light"] .pair .p,html[data-theme="light"] .st2 .s{
+  background:var(--pv-inset);border-color:rgba(17,26,39,.07);box-shadow:inset 0 1px 0 #ffffff}
+
+/* headings: page titles lit from above */
+.page-head h1{background:var(--pv-head);-webkit-background-clip:text;background-clip:text;color:transparent;
+  font-size:clamp(34px,6vw,44px);letter-spacing:-.045em;padding-bottom:2px}
+.page-head .eyebrow::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:9px;
+  vertical-align:1px;background:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 18%,transparent),0 0 12px var(--accent)}
+@media(forced-colors:active){.page-head h1{color:CanvasText;background:none}}
+
+/* numbers that matter */
+.metric,.pair .p .v,.st2 .s .v,.ring .mid b,.calendar-day b{font-variant-numeric:tabular-nums}
+.v.volt,.metric.volt{text-shadow:0 0 22px var(--pv-glow)}
+.ring svg{filter:drop-shadow(0 0 7px var(--pv-glow))}
+.meter i{background:linear-gradient(90deg,var(--accent-dim),var(--accent));box-shadow:0 0 12px var(--pv-glow)}
+
+/* buttons: lit primary, glass secondary, a small lift */
+.btn{transition:transform .14s ease,box-shadow .2s ease,filter .15s ease,background .15s ease,border-color .15s ease}
+.btn:not(.ghost):not(.danger){background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 82%,#ffffff),var(--accent) 48%,
+  var(--accent-dim));box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 10px 24px -12px var(--pv-glow),0 1px 2px rgba(0,0,0,.2)}
+html[data-theme="light"] .btn:not(.ghost):not(.danger){background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 86%,#ffffff),
+  var(--accent) 55%,color-mix(in srgb,var(--accent) 86%,#000000))}
+.btn.ghost{background:linear-gradient(rgba(26,39,58,.72),rgba(18,28,43,.72)) padding-box,var(--pv-edge) border-box;border:1px solid transparent}
+html[data-theme="light"] .btn.ghost{background:linear-gradient(#ffffff,#f6f8fb) padding-box,var(--pv-edge) border-box;border:1px solid transparent}
+.btn.ghost:not(:disabled):hover,html[data-theme="light"] .btn.ghost:not(:disabled):hover{border-color:color-mix(in srgb,var(--accent) 55%,transparent)}
+.btn:not(:disabled):hover{transform:translateY(-1px)}
+.btn:not(:disabled):active{transform:translateY(0) scale(.98)}
+.chip{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+
+/* second row of tabs inside a screen */
+#subnav{border-bottom:0}
+#subnav .pill{transition:background .15s ease,color .15s ease}
+#subnav .pill[aria-pressed="true"],html[data-theme="light"] #subnav .pill[aria-pressed="true"]{
+  background:var(--pv-card) padding-box,var(--pv-edge) border-box;border:1px solid transparent;
+  box-shadow:var(--pv-shadow);color:var(--on-surface)}
+
+/* fields */
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 16%,transparent)}
+.segctl button[aria-pressed="true"]{box-shadow:0 6px 16px -8px var(--pv-glow)}
+
+/* tab bar: a floating glass dock on phones, a glass strip on wide screens */
+nav.tabs,html[data-theme="light"] nav.tabs{background:var(--pv-glass);backdrop-filter:blur(22px) saturate(170%);
+  -webkit-backdrop-filter:blur(22px) saturate(170%)}
+nav.tabs button{transition:color .15s ease,background .2s ease,box-shadow .2s ease}
+nav.tabs button[aria-current="page"],html[data-theme="light"] nav.tabs button[aria-current="page"]{
+  color:var(--on-accent);background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 86%,#ffffff),var(--accent));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 8px 20px -8px var(--pv-glow)}
+html[data-theme="light"] nav.tabs button[aria-current="page"]{color:#ffffff;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--tab) 82%,#ffffff),var(--tab));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 8px 20px -8px color-mix(in srgb,var(--tab) 45%,transparent)}
+html[data-theme="light"] nav.tabs button[aria-current="page"] svg{stroke:#ffffff}
+@media(max-width:759px){
+  nav.tabs,html[data-theme="light"] nav.tabs{left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));
+    padding:6px 0;border:1px solid transparent;border-radius:26px;
+    background:linear-gradient(var(--pv-glass),var(--pv-glass)) padding-box,var(--pv-edge) border-box;
+    box-shadow:0 24px 48px -16px rgba(0,0,0,.6),0 2px 8px rgba(0,0,0,.2)}
+  html[data-theme="light"] nav.tabs{box-shadow:0 20px 44px -18px rgba(17,26,39,.35),0 2px 8px rgba(17,26,39,.08)}
+  nav.tabs .inner{padding:0 6px;gap:2px}
+  nav.tabs button{min-height:54px;border-radius:20px}
+  body{padding-bottom:124px}
+}
+@media(min-width:760px){
+  nav.tabs,html[data-theme="light"] nav.tabs{box-shadow:0 0 0 100vmax var(--pv-glass);clip-path:inset(0 -100vmax -1px)}
+  nav.tabs button{border-radius:12px}
+}
+
+/* each screen's cards rise in, one after another */
+@media(prefers-reduced-motion:no-preference){
+  .panel.on>*{animation:pvRise .55s cubic-bezier(.2,.75,.2,1) both}
+  .panel.on>*:nth-child(2){animation-delay:.04s}.panel.on>*:nth-child(3){animation-delay:.08s}
+  .panel.on>*:nth-child(4){animation-delay:.12s}.panel.on>*:nth-child(5){animation-delay:.16s}
+  .panel.on>*:nth-child(6){animation-delay:.2s}.panel.on>*:nth-child(n+7){animation-delay:.24s}
+}
+@keyframes pvRise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@media print{body::before,body::after{display:none}}
 </style>
 </head>
 <body>
